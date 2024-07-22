@@ -27,10 +27,7 @@ public class BusReservationSystem {
         bus.bookSeat(11);
         bus.bookSeat(12);
         bus.bookSeat(13);
-        bus.displayBusInfromations();
-        
-        bus.cancelSeat(11);
-        bus.displayBusInfromations();
+        bus.displayBusInfo();
         
     }
 }

@@ -93,10 +93,17 @@ public class Bus implements Comparable<Bus> {
     
     
     //   Display the bus Seats
-    public void displayBusInfromations() {
+    public void displayBusInfo() {
         
         StringBuilder txt = new StringBuilder();
         int seatRow = 0;
+        
+        txt.append("  ------------- Bus Informations -------------  \n\n");
+        txt.append(" Bus Number Plate   : " + busNumberPlate + "\n");
+        txt.append(" Bus Starting Point : " + startPoint + "\n");
+        txt.append(" Bus Ending Point   : " + endPoint + "\n");
+        txt.append(" Bus Starting Time  : " + startTime + "\n");
+        txt.append("\n\n  ------------- Bus Seats and Reservations -------------  \n\n");
 
         for (int i = 0; i < seats.length(); i++) {
             String seatNumber = (i < 9) ? "Seat 0" + (i + 1) : "Seat " + (i + 1);
@@ -113,7 +120,7 @@ public class Bus implements Comparable<Bus> {
                 seatRow = 0;
             }
         }
-
+        
         System.out.println(txt.toString());
         
     }

@@ -10,8 +10,8 @@ package busreservationsystem.compands;
  */
 public class LinkedList<ListType> {
     private Node<ListType> root;
-    private int lenght;
-    private int maxLenght;
+    private int length;
+    private int maxLength;
     
     private static class Node<ListType> {
         ListType data;
@@ -25,14 +25,20 @@ public class LinkedList<ListType> {
     
     public LinkedList(int maxLenght) {
         this.root = null;
-        this.lenght = 0;
-        this.maxLenght = maxLenght;
+        this.length = 0;
+        this.maxLength = maxLenght;
+    }
+    
+    public LinkedList() {
+        this.root = null;
+        this.length = 0;
+        this.maxLength = 0;
     }
     
     public void push(ListType value){
-        
-        if (lenght > maxLenght) throw new IllegalStateException("Connot push " + value + ", list is full.");
-        
+        if (maxLength != 0) {
+            if (length > maxLength) throw new IllegalStateException("Connot push " + value + ", list is full.");
+        }
         Node<ListType> newNode = new Node<>(value);
         if (root == null) {
             root = newNode;
@@ -43,7 +49,7 @@ public class LinkedList<ListType> {
             }
             current.next = newNode;
         }
-        lenght ++;
+        length ++;
     }
     
     public ListType get(int index) {
@@ -65,12 +71,12 @@ public class LinkedList<ListType> {
     }
     
     private void checkIndex(int index) {
-        if (index < 0 || index >= lenght) {
-            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + lenght);
+        if (index < 0 || index >= length) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + length);
         }
     }
     
-    public int length() {return lenght;}
+    public int length() {return length;}
     
     @Override
     public String toString() {
@@ -92,13 +98,13 @@ public class LinkedList<ListType> {
         checkIndex(index);
         ListType data = null;
         
-        for (int i = 0; i < lenght; i ++) {
+        for (int i = 0; i < length; i ++) {
             if (i <= index) {
                 data = root.data;
                 root = root.next;
             }
         }
-        lenght --;
+        length --;
         return data;
     }
 }

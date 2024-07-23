@@ -21,12 +21,12 @@ public class Queue<ListType> {
     
     Node front;
     Node rear;
-    int lenght;
+    int length;
     
     public Queue(){
         this.front = null;
         this.rear = null;
-        this.lenght = 0;
+        this.length = 0;
     }
     
     private void enqueue_val(ListType data) {
@@ -37,26 +37,26 @@ public class Queue<ListType> {
             rear.next = newNode;
             rear = newNode;
         }    
-        lenght ++;
+        length ++;
     }
     private ListType dequeue_val(){
         if (isEmpty()) {
-            return (ListType) new IndexOutOfBoundsException("Size: " + lenght);
+            return (ListType) new IndexOutOfBoundsException("Size: " + length);
         }
         
         Node temp = front;
         front = temp.next;
-        lenght ++;
+        length ++;
         if (front == null) {
             rear = null;
         }
         return temp.data;
     }
-    private boolean isEmpty() {return lenght == 0;}
+    private boolean isEmpty() {return length == 0;}
     
     
     public ListType peek() {return isEmpty() ? null : front.data;}
-    public int lenght() {return lenght;}
+    public int lenght() {return length;}
     public void enqueue(ListType data) {enqueue_val(data);}
     public ListType dequeue(){return dequeue_val();}
     

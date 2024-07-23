@@ -42,7 +42,7 @@ public class AVLTree<ListType extends Comparable<ListType>> {
         }
         
         node.height = 1 + Math.max(height(node.left), height(node.right));
-        node.lenght = 1 + lenght(node.left) + lenght(node.right);
+        node.lenght = 1 + length(node.left) + length(node.right);
         return balance(node);
     }
     
@@ -71,7 +71,7 @@ public class AVLTree<ListType extends Comparable<ListType>> {
         }
         
         node.height = 1 + Math.max(height(node.left), height(node.left));
-        node.lenght = 1 + lenght(node.left) + lenght(node.right); 
+        node.lenght = 1 + length(node.left) + length(node.right); 
         return balance(node);
     }
     
@@ -124,9 +124,9 @@ public class AVLTree<ListType extends Comparable<ListType>> {
         y.left = T2;
         
         y.height = Math.max(height(y.left), height(y.right)) + 1;
-        y.lenght = 1 + lenght(y.left) + lenght(y.right);
+        y.lenght = 1 + length(y.left) + length(y.right);
         x.height = Math.max(height(x.left), height(x.right)) + 1;
-        x.lenght = 1 + lenght(x.left) + lenght(x.right);
+        x.lenght = 1 + length(x.left) + length(x.right);
         
         
         return x;
@@ -141,9 +141,9 @@ public class AVLTree<ListType extends Comparable<ListType>> {
         x.right = T2;
         
         x.height = Math.max(height(x.left), height(x.right)) + 1;
-        x.lenght = 1 + lenght(x.left) + lenght(x.right);
+        x.lenght = 1 + length(x.left) + length(x.right);
         y.height = Math.max(height(y.left), height(y.right)) + 1;
-        y.lenght = 1 + lenght(y.left) + lenght(y.right); 
+        y.lenght = 1 + length(y.left) + length(y.right); 
         
         return y;
     }
@@ -159,7 +159,7 @@ public class AVLTree<ListType extends Comparable<ListType>> {
     
     //    Get and access the value
     private ListType getByIndex(Node node, int index){
-        int leftSize = lenght(node.left);
+        int leftSize = length(node.left);
         if(index < leftSize){
             return getByIndex(node.left, index);
         } else if (index > leftSize){
@@ -170,14 +170,14 @@ public class AVLTree<ListType extends Comparable<ListType>> {
     }
     
     //    get the lenght of the tree
-    private int lenght(Node node){
+    private int length(Node node){
         return (node == null) ? 0 : node.lenght;
     }
     
     
     //    get lenght of the tree
-    public int lenght(){
-        return lenght(root);
+    public int length(){
+        return length(root);
     }
     
     //    get hight of the tree
@@ -187,8 +187,8 @@ public class AVLTree<ListType extends Comparable<ListType>> {
     
     //    call the get 
     public ListType getByIndex(int index){
-        if (index < 0 || index >= lenght(root)) {
-            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + lenght(root));
+        if (index < 0 || index >= length(root)) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + length(root));
         }
         return getByIndex(root, index);
     }
@@ -208,5 +208,6 @@ public class AVLTree<ListType extends Comparable<ListType>> {
         inOrderTraversal(root);
         System.out.println();
     }
+    
     
 }

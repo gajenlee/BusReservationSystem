@@ -10,6 +10,7 @@ import busreservationsystem.Customer;
 import busreservationsystem.Ragister;
 
 import busreservationsystem.compands.LinkedList;
+import busreservationsystem.compands.AVLTree;
 
 import java.util.Scanner;
 
@@ -35,8 +36,13 @@ public class BusReservationSystem {
         buses.push(bus2);
         buses.push(bus3);
         buses.push(bus4);
-        Ragister reg = new Ragister(buses);
+        Ragister reg = new Ragister(buses); 
         
-        reg.getBusStoredArray().inOrderTraversal();
+        Customer cust = new Customer("John", "4234234234234", "john@gmail.com", "Moratuwa", 20);
+        Bus targetedBus = reg.getBusStoredArray().binarySearchByString("3844");
+        targetedBus.displayBusInfo();
+        Booking book = new Booking(targetedBus, cust);
+        book.bookASeat(7);
+        targetedBus.displayBusInfo(); 
     }
 }

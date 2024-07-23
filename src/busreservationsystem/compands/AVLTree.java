@@ -4,6 +4,8 @@
  */
 package busreservationsystem.compands;
 
+import busreservationsystem.Bus;
+
 /**
  *
  * @author gajen
@@ -174,6 +176,41 @@ public class AVLTree<ListType extends Comparable<ListType>> {
         return (node == null) ? 0 : node.lenght;
     }
     
+    //    Search the Bus using bainary search
+    private ListType search(ListType targetValue, Node node) {
+        if (node == null) return null;
+        
+        if(targetValue.compareTo(node.data) < 0){
+            return search(targetValue, node.left);
+        } else if (targetValue.compareTo(node.data) > 0) {
+            return search(targetValue, node.right);
+        } else {
+            return node.data;
+        }
+    }
+    
+    private ListType binarySearchByString(String targetValue, Node node){
+        if (node != null) {
+            Bus targetBus = (Bus) node.data;
+            if(targetValue.compareTo(targetBus.getNumberPlate()) < 0) {
+                return binarySearchByString(targetValue, node.left);
+            } else if (targetValue.compareTo(targetBus.getNumberPlate()) > 0){
+                return binarySearchByString(targetValue, node.right);
+            } else {
+                return node.data;
+            }
+        }
+        return null;
+    }
+    
+    public ListType binarySearchByString(String target) {
+        return binarySearchByString(target, root);
+    }
+    
+    //    call the search function
+    public ListType search(ListType data){
+        return search(data, root);
+    }
     
     //    get lenght of the tree
     public int length(){

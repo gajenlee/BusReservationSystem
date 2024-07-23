@@ -10,13 +10,12 @@ import busreservationsystem.compands.LinkedList;
  *
  * @author gajen
  */
-public class Customer {
+public class Customer implements Comparable<Customer> {
     private String custName;
     private String custPhoneNumber;
     private String custEmail;
     private String custCity;
     private int custAge;
-    private LinkedList<String> custList = new LinkedList<>(5);
     
     
     public Customer(String name, String phoneNum, String email, String city, int age) {
@@ -25,19 +24,18 @@ public class Customer {
         setCustomerEmail(email);
         setCustomerCity(city);
         setCustomerAge(age);
-        
-        //     Store the customer info
-        storeCustomer(custName, custPhoneNumber, custEmail, custCity, custAge);
     }
     
-    private void storeCustomer(String name, String phoneNum, String email, String city, int age) {
-        custList.push(name);
-        custList.push(phoneNum);
-        custList.push(email);
-        custList.push(city);
-        custList.push(Integer.toString(age));
+    
+    //    comapare to object number plate
+    @Override
+    public int compareTo(Customer other) {
+        return this.custName.compareToIgnoreCase(other.getCustomerName());
     }
     
+    //    Objct print string
+    @Override
+    public String toString() {return "Bus [Number Plate = " + custName + "]";}
     
     //    Getters
     public String getCustomerName(){
@@ -54,10 +52,6 @@ public class Customer {
     }
     public int getCustomerAge(){
         return custAge;
-    }
-    
-    public LinkedList<String> getCustomerInfoArray(){
-        return custList;
     }
     
     //    Setters

@@ -5,6 +5,7 @@
 package busreservationsystem.compands;
 
 import busreservationsystem.Bus;
+import busreservationsystem.Customer;
 
 /**
  *
@@ -203,8 +204,26 @@ public class AVLTree<ListType extends Comparable<ListType>> {
         return null;
     }
     
+    private ListType binarySearchByStringCustomer(String targetValue, Node node) {
+        if (node != null) {
+            Customer targetBus = (Customer) node.data;
+            if(targetValue.compareTo(targetBus.getCustomerName()) < 0) {
+                return binarySearchByStringCustomer(targetValue, node.left);
+            } else if (targetValue.compareTo(targetBus.getCustomerName()) > 0){
+                return binarySearchByStringCustomer(targetValue, node.right);
+            } else {
+                return node.data;
+            }
+        }
+        return null;
+    }
+    
     public ListType binarySearchByString(String target) {
         return binarySearchByString(target, root);
+    }
+    
+    public ListType binarySearchByStringCustomer(String target) {
+        return binarySearchByStringCustomer(target, root);
     }
     
     //    call the search function

@@ -8,6 +8,7 @@ import busreservationsystem.Booking;
 import busreservationsystem.Bus;
 import busreservationsystem.Customer;
 import busreservationsystem.Ragister;
+import busreservationsystem.ReservationInterface;
 
 import busreservationsystem.compands.LinkedList;
 import busreservationsystem.compands.AVLTree;
@@ -44,5 +45,7 @@ public class BusReservationSystem {
         Booking book = new Booking(targetedBus, cust);
         book.bookASeat(7);
         targetedBus.displayBusInfo(); 
+        
+        System.out.println(ReservationInterface.getSearchBusNumberPlate());
     }
 }

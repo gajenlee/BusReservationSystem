@@ -5,6 +5,7 @@
 package busreservationsystem;
 
 import busreservationsystem.Bus;
+import busreservationsystem.Customer;
 import busreservationsystem.compands.AVLTree;
 import busreservationsystem.compands.LinkedList;
 
@@ -17,6 +18,7 @@ public class Ragister {
     
     private LinkedList<Bus> objects;
     private AVLTree<Bus> storeBus = new AVLTree<>();
+    private AVLTree<Customer> storeCustomer = new AVLTree<>();
     
     public Ragister(LinkedList<Bus> obj){
         this.objects = obj;

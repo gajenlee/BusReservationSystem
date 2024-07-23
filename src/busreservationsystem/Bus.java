@@ -124,4 +124,8 @@ public class Bus implements Comparable<Bus> {
         System.out.println(txt.toString());
         
     }
+
+    String getCustomerName() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

@@ -9,5 +9,5 @@ package busreservationsystem;
  * @author gajen
  */
 public class Booking {
-
+    
 }

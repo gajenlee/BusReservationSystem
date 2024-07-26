@@ -6,13 +6,16 @@ package busreservationsystem;
 
 import java.util.Scanner;
 import busreservationsystem.compands.LinkedList;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
  * @author gajen
  */
 public class ReservationInterface {
     
-    public static void  mainInterface() {
+    public static int  mainInterface() {
         
         Scanner scan = new Scanner(System.in);
         int getInput;
@@ -20,10 +23,13 @@ public class ReservationInterface {
         System.out.println(" ========================================== Bus Reservation System ========================================== \n");
         System.out.println("1. Book a Seat");
         System.out.println("2. Search Bus and Informations");
-        System.out.println("3. Company Usage\n");
+        System.out.println("3. Company Usage");
+        System.out.println("4. Exit");
         
-        System.out.print("Enter the value (1, 2, 3): ");
+        System.out.print("\nEnter the value (1, 2, 3, 4): ");
         getInput = scan.nextInt();
+        
+        return getInput;
     }
     
     public static LinkedList<String> registerInterface() {
@@ -62,6 +68,7 @@ public class ReservationInterface {
     public static LinkedList<String> registerInterfaceBus() {
         Scanner scan = new Scanner(System.in);
         String numberPlate;
+        int seatTotal;
         String startPoint;
         String endPoint;
         String startTime;
@@ -72,6 +79,10 @@ public class ReservationInterface {
         System.out.print("Bus Number Plate: ");
         numberPlate = scan.nextLine();
         array.push(numberPlate);
+        
+        System.out.print("Total Bus Seats: ");
+        seatTotal = scan.nextInt();
+        array.push(Integer.toString(seatTotal));
         
         System.out.print("Bus Starting Point: ");
         startPoint = scan.nextLine();
@@ -92,7 +103,7 @@ public class ReservationInterface {
         return array;
     }
     
-    public static void bookingInterface() {
+    public static int bookingInterface() {
         
         Scanner scan = new Scanner(System.in);
         int getInput;
@@ -100,9 +111,12 @@ public class ReservationInterface {
         System.out.println(" ========================================== Bus Reservation System | Register ========================================== \n");
         System.out.println("1. Register");
         System.out.println("2. Already Register");
+        System.out.println("3. Back");
         
-        System.out.print("Enter the value (1, 2): ");
+        System.out.print("\nEnter the value (1, 2, 3): ");
         getInput = scan.nextInt();
+        
+        return getInput;
     }
     
     public static String getSearchBusNumberPlate() {
@@ -110,13 +124,75 @@ public class ReservationInterface {
         String numberPlate;
         
         System.out.println(" ========================================== Bus Reservation System | Booking ========================================== \n");
-        System.out.print(" Enter the Bus Number Plate Number: ");
+        System.out.print("\nEnter the Bus Number Plate Number: ");
         numberPlate = scan.nextLine();
         
         return numberPlate;
     }
     
-    public static void bookingMenu() {
+    public static int getSeatNumber(String txt) {
+        
+        Scanner scan = new Scanner(System.in);
+        int getInput;
+        
+        System.out.println(" ========================================== Bus Reservation System | Booking ========================================== \n");
+        System.out.print("\nEnter the " + txt + " bus seat number: ");
+        getInput = scan.nextInt();
+        
+        return getInput;
+    }
+    
+    public static String getStringVal(String txt) {
+        Scanner scan = new Scanner(System.in);
+        String getInput;
+        
+        System.out.print(txt);
+        getInput = scan.nextLine();
+        
+        return getInput;
+    }
+    
+    public static int getIntegerVal(String txt) {
+        Scanner scan = new Scanner(System.in);
+        int getInput;
+        
+        System.out.print(txt);
+        getInput = scan.nextInt();
+        
+        return getInput;
+    }
+    
+    public static double getDoubleVal(String txt) {
+        Scanner scan = new Scanner(System.in);
+        double getInput;
+        
+        System.out.print(txt);
+        getInput = scan.nextDouble();
+        
+        return getInput;
+    }
+    
+    public static int displayBusEdit() {
+        Scanner scan = new Scanner(System.in);
+        int getInput;
+        
+        System.out.println(" ========================================== Bus Reservation System | Company Usage ========================================== \n");
+        System.out.println("1. Edit Number Plate");
+        System.out.println("2. Delete");
+        System.out.println("3. Edit Total Seats");
+        System.out.println("4. Edit Starting Point");
+        System.out.println("5. Edit Ending Point");
+        System.out.println("6. Edit Starting Time");
+        System.out.println("7. Edit Fare");
+        System.out.println("8. Back");
+        
+        System.out.print("\nEnter the value (1, 2, 3, 4, 5, 6, 7, 8): ");
+        getInput = scan.nextInt();
+        return getInput;
+    }
+    
+    
+    public static int bookingMenu() {
         Scanner scan = new Scanner(System.in);
         int getInput;
         
@@ -124,21 +200,36 @@ public class ReservationInterface {
         System.out.println("1. Book Seat");
         System.out.println("2. Cancel Booking");
         System.out.println("3. Replace Seat");
+        System.out.println("4. Back");
         
-        System.out.print("Enter the value (1, 2): ");
+        System.out.print("\nEnter the value (1, 2, 3, 4): ");
         getInput = scan.nextInt();
+        
+        return getInput;
     }
     
-    public static void companyUeage() {
+    public static int companyUeage() {
         Scanner scan = new Scanner(System.in);
         int getInput;
         
         System.out.println(" ========================================== Bus Reservation System | Company Ueage ========================================== \n");
         System.out.println("1. Ragister Bus");
         System.out.println("2. Search Bus");
+        System.out.println("3. Back");
         
-        System.out.print("Enter the value (1, 2): ");
+        System.out.print("\nEnter the value (1, 2, 3): ");
         getInput = scan.nextInt();
+        
+        return getInput;
+    }
+    
+    public void waitConsole(){
+        System.out.print("\nContinue");
+        try {
+            System.in.read();
+        } catch (IOException ex) {
+            Logger.getLogger(ReservationInterface.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
 }

@@ -218,6 +218,24 @@ public class AVLTree<ListType extends Comparable<ListType>> {
         return null;
     }
     
+    private int indexOf(Node node, ListType data, int index) {
+        if (node == null) return -1;
+        
+        if (data.compareTo(node.data) < 0) {
+            return indexOf(node.left, data, index);
+        } else if (data.compareTo(node.data) > 0) {
+            int leftSize = length(node.left);
+            return indexOf(node.right, data, index + leftSize +1);
+        }else {
+            return index + length(node.left);
+        }
+    }
+    
+    
+    public int indexOf(ListType data) {
+        return indexOf(root, data, 0);
+    }
+    
     public ListType binarySearchByString(String target) {
         return binarySearchByString(target, root);
     }

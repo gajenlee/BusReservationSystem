@@ -83,6 +83,11 @@ public class Bus implements Comparable<Bus> {
         seats.set(seatNumber - 1, 1);
     }
     
+    public boolean isSeatAvailable(int seatNum) {
+        if ( seats.get(seatNum - 1) == 0 ) return true;
+        else return false;
+    } 
+    
     //    Cancel Seat
     public void cancelSeat(int seatNumber){
         if (!(seatNumber - 1 < TOTAL_SEAT) || !(0 < seatNumber - 1)) {

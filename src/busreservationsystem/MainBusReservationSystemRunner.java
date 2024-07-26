@@ -4,21 +4,8 @@ package busreservationsystem;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
-import busreservationsystem.Booking;
-import busreservationsystem.Bus;
-import busreservationsystem.Customer;
-import busreservationsystem.Ragister;
-import busreservationsystem.ReservationInterface;
-
 import busreservationsystem.compands.LinkedList;
 import busreservationsystem.compands.AVLTree;
-import java.io.IOException;
-
-import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  *
  * @author gajen

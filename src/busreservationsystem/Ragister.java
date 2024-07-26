@@ -3,9 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package busreservationsystem;
-
-import busreservationsystem.Bus;
-import busreservationsystem.Customer;
 import busreservationsystem.compands.AVLTree;
 import busreservationsystem.compands.LinkedList;
 

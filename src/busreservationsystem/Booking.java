@@ -4,7 +4,6 @@
  */
 package busreservationsystem;
 
-import busreservationsystem.Bus;
 import busreservationsystem.compands.Queue;
 import busreservationsystem.compands.AVLTree;
 

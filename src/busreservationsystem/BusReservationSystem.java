@@ -3,10 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
 package busreservationsystem;
-
-import busreservationsystem.compands.Queue;
-import java.util.ArrayList;
-import busreservationsystem.Bus;
 /**
  *
  * @author gajen

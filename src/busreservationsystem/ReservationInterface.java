@@ -89,37 +89,31 @@ public class ReservationInterface {
     
     public static LinkedList<String> registerInterfaceBus() {
         Scanner scan = new Scanner(System.in);
-        String numberPlate;
-        int seatTotal;
-        String startPoint;
-        String endPoint;
-        String startTime;
-        double fare;
         LinkedList<String> array = new LinkedList<>(5);
         print_art();
         System.out.println(" ================================== Bus Reservation System | Register ================================== \n");
         System.out.print("Bus Number Plate > ");
-        numberPlate = scan.nextLine();
+        String numberPlate = scan.nextLine();
         array.push(numberPlate);
         
-        System.out.print("Total Bus Seats > ");
-        seatTotal = scan.nextInt();
-        array.push(Integer.toString(seatTotal));
-        
         System.out.print("Bus Starting Point > ");
-        startPoint = scan.nextLine();
+        String startPoint = scan.nextLine();
         array.push(startPoint);
         
         System.out.print("Bus Ending Point > ");
-        endPoint = scan.nextLine();
+        String endPoint = scan.nextLine();
         array.push(endPoint);
         
         System.out.print("Starting Time > ");
-        startTime = scan.nextLine();
+        String startTime = scan.nextLine();
         array.push(startTime);
         
+        System.out.print("Total Bus Seats > ");
+        int seatTotal = scan.nextInt();
+        array.push(Integer.toString(seatTotal));
+        
         System.out.print("Bus One Seat Fare > ");
-        fare = scan.nextDouble();
+        double fare = scan.nextDouble();
         array.push(Double.toString(fare));
         
         return array;

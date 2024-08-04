@@ -28,7 +28,7 @@ public class Bus implements Comparable<Bus> {
     }
     
     
-    public Bus(String number, int total_seat, String startPoint, String endPoint, String startTime, double fare){
+    public Bus(String number, String startPoint, String endPoint, String startTime, int total_seat, double fare){
         this.busNumberPlate = number;
         this.TOTAL_SEAT = total_seat;
         this.startPoint = startPoint;

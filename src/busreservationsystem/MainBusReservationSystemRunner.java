@@ -154,10 +154,10 @@ public class MainBusReservationSystemRunner extends  ReservationInterface{
     public void registerABus(LinkedList<String> arr) {
         busTree.insert(new Bus(
                             arr.get(0), 
-                            Integer.parseInt(arr.get(1)), 
+                            arr.get(1), 
                             arr.get(2), 
                             arr.get(3),
-                            arr.get(4),
+                            Integer.parseInt(arr.get(4)),
                             Double.parseDouble(arr.get(5)))
                             );
     }

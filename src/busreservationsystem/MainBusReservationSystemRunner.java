@@ -15,17 +15,6 @@ public class MainBusReservationSystemRunner extends  ReservationInterface{
     private AVLTree<Bus> busTree = new AVLTree<>();
     private AVLTree<Customer> customerTree = new AVLTree<>();
     
-    public MainBusReservationSystemRunner () {
-//        busTree.insert(new Bus("1234", 20, "sadasdgh", "asgdhasg", "12:20 AM", 20.20));
-//        busTree.insert(new Bus("1293", 60, "sadasdgh", "asgdhasg", "04:20 AM", 20.20));
-//        busTree.insert(new Bus("1272", 20, "sadasdgh", "asgdhasg", "03:20 AM", 20.20));
-//        busTree.insert(new Bus("2383", 40, "sadasdgh", "asgdhasg", "12:20 AM", 20.20));
-//        busTree.insert(new Bus("4932", 25, "sadasdgh", "asgdhasg", "10:20 AM", 20.20));
-//        busTree.insert(new Bus("3284", 30, "sadasdgh", "asgdhasg", "11:20 AM", 20.20));
-//        busTree.insert(new Bus("5023", 60, "sadasdgh", "asgdhasg", "02:20 AM", 20.20));
-//        busTree.insert(new Bus("1023", 30, "sadasdgh", "asgdhasg", "03:20 AM", 20.20));
-    }
-    
     
     public void mainSystemLoop() {
         boolean mainLoop = true;
@@ -158,7 +147,7 @@ public class MainBusReservationSystemRunner extends  ReservationInterface{
                             arr.get(2), 
                             arr.get(3),
                             Integer.parseInt(arr.get(4)),
-                            Double.parseDouble(arr.get(5)))
+                            Float.parseFloat(arr.get(5)))
                             );
     }
     public int searchBus() {
@@ -238,8 +227,8 @@ public class MainBusReservationSystemRunner extends  ReservationInterface{
     }
     
     public void editFare(Bus obj) {
-        double startingTime = getDoubleVal("\nEnter the fare value: ");
-        obj.setFare(startingTime);
+        float fare = getFloatVal("\nEnter the fare value: ");
+        obj.setFare(fare);
         System.out.println("The bus sccessfully changed ... ");
         waitConsole();
     }

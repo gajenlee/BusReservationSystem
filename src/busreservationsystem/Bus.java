@@ -19,7 +19,7 @@ public class Bus implements Comparable<Bus> {
     private String startPoint = "";
     private String endPoint = "";
     private String startTime = "";
-    private double fare;
+    private float fare;
     
     private void assignEmptySeatValues() {
         for(int i = 0; i<TOTAL_SEAT; i++){
@@ -28,7 +28,7 @@ public class Bus implements Comparable<Bus> {
     }
     
     
-    public Bus(String number, String startPoint, String endPoint, String startTime, int total_seat, double fare){
+    public Bus(String number, String startPoint, String endPoint, String startTime, int total_seat, float fare){
         this.busNumberPlate = number;
         this.TOTAL_SEAT = total_seat;
         this.startPoint = startPoint;
@@ -70,7 +70,7 @@ public class Bus implements Comparable<Bus> {
         if (this.startPoint != endPoint) this.endPoint = endPoint;
     }
     public void setStartTime(String startTime) {this.startTime = startTime;}
-    public void setFare(double fare) {this.fare = fare;}
+    public void setFare(float fare) {this.fare = fare;}
     
     //    book a seat
     public void bookSeat(int seatNumber){

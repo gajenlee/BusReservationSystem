@@ -113,7 +113,7 @@ public class ReservationInterface {
         array.push(Integer.toString(seatTotal));
         
         System.out.print("Bus One Seat Fare > ");
-        double fare = scan.nextDouble();
+        float fare = scan.nextFloat();
         array.push(Double.toString(fare));
         
         return array;
@@ -150,8 +150,6 @@ public class ReservationInterface {
         
         Scanner scan = new Scanner(System.in);
         int getInput;
-        print_art();
-        System.out.println(" ================================== Bus Reservation System | Booking ================================== \n");
         System.out.print("\nEnter the " + txt + " bus seat number: ");
         getInput = scan.nextInt();
         
@@ -178,12 +176,12 @@ public class ReservationInterface {
         return getInput;
     }
     
-    public static double getDoubleVal(String txt) {
+    public static float getFloatVal(String txt) {
         Scanner scan = new Scanner(System.in);
-        double getInput;
+        float getInput;
         
         System.out.print(txt);
-        getInput = scan.nextDouble();
+        getInput = scan.nextFloat();
         
         return getInput;
     }

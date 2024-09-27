@@ -6,9 +6,7 @@ package busreservationsystem;
  */
 import busreservationsystem.compands.LinkedList;
 import busreservationsystem.compands.AVLTree;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 /**
  *
@@ -33,10 +31,10 @@ public class MainBusReservationSystemRunner extends ReservationInterface{
                 int getBookInput = bookingInterface();
                 if (getBookInput == 1){
                     LinkedList<String> array = registerInterface();
-                    registerCustomer(array);
+                    Customer customer = registerCustomer(array);
                     System.out.println("The Customer Sccueefully Registered .... ");
                     waitConsole();
-                    if (bookingconnecter() == -1) continue;
+                    if (bookingconnecter(customer) == -1) continue;
                     
                 } else if (getBookInput == 2) {
                     continue;
@@ -68,16 +66,16 @@ public class MainBusReservationSystemRunner extends ReservationInterface{
         }
     }
     
-    private int bookingconnecter() {
+    private int bookingconnecter(Customer cust) {
         int getInput = bookingMenu();
         if(getInput == 1){
-            bookASeat();
+            bookASeat(cust);
             
         } else if (getInput == 2) {
-            cancelASeat();
+            cancelASeat(cust);
             
         } else if (getInput == 3) {
-            replaceASeat();
+            replaceASeat(cust);
             
         } else {
             return -1;
@@ -86,43 +84,46 @@ public class MainBusReservationSystemRunner extends ReservationInterface{
         return 1;
     }
     
-    public void bookASeat() {
+    public void bookASeat(Customer cust) {
         String name = getSearchBusNumberPlate();
         Bus bus = busTree.binarySearchByString(name);
         bus.displayBusInfo();
         int seatNum = getSeatNumber("");
-        bus.bookSeat(seatNum);
+        Booking book = new Booking(bus, cust);
+        book.bookASeat(seatNum);
+        insertBooking(book);
         System.out.println("Seat Booked .... ");
         waitConsole();
     }
-    public void cancelASeat() {
+    public void cancelASeat(Customer cust) {
         String name = getSearchBusNumberPlate();
         Bus bus = busTree.binarySearchByString(name);
         bus.displayBusInfo();
         int seatNum = getSeatNumber("");
-        bus.cancelSeat(seatNum);
+        Booking book = new Booking(bus, cust);
+        book.cancelASeat(seatNum);
         System.out.println("Seat Canceled .... ");
         System.out.println("The message sent to besite customer.... ");
         waitConsole();
     }
-    public void replaceASeat() {
+    public void replaceASeat(Customer cust) {
         String name = getSearchBusNumberPlate();
         Bus bus = busTree.binarySearchByString(name);
         bus.displayBusInfo();
         int seatNum = getSeatNumber("");
         int newSeatNum = getSeatNumber("new");
-        bus.cancelSeat(seatNum);
-        System.out.println("Seat Canceled .... ");
-        bus.bookSeat(newSeatNum);
+        Booking book = new Booking(bus, cust);
+        book.replaceASeat(seatNum, newSeatNum);
         System.out.println("New seat allocated .... ");
         System.out.println("The message sent to besite customer.... ");
         waitConsole();
     }
     
-    public void registerCustomer(LinkedList<String> arr) {
+    public Customer registerCustomer(LinkedList<String> arr) {
         Customer customer = new Customer(arr.get(0), arr.get(1), arr.get(2), arr.get(3), Integer.parseInt(arr.get(4)));
         customerTree.insert(customer);
         insertCustomer(customer);
+        return customer;
     }
     public boolean alreadyRegisteredCustomer() {
         String customerName = getStringVal("\nEnter the your name: ");

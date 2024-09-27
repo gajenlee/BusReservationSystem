@@ -1,5 +1,6 @@
 package busreservationsystem.compands;
 
+import busreservationsystem.Booking;
 import busreservationsystem.Bus;
 import busreservationsystem.Customer;
 import java.sql.Connection;
@@ -103,7 +104,7 @@ public class DBConnection {
                     + "cust_email VARCHAR(200) NOT NULL, "
                     + "cust_city VARCHAR(100) NOT NULL, "
                     + "cust_age INT NOT NULL, "
-                    + "seat_nums INTEGER[]"
+                    + "seat_nums INT"
                     + ")";
         
         return executeQuery(createTableQuery);
@@ -112,10 +113,11 @@ public class DBConnection {
     protected boolean createBookingTable() {
         String createTableQuery = "CREATE TABLE IF NOT EXISTS booking ("
                     + "booking_id VARCHAR(200) PRIMARY KEY, "
-                    + "booked_bus VARCHAR(200), "
-                    + "booked_customer VARCHAR(200), "
-                    + "CONSTRAINT fk_buses FOREIGN KEY(booked_bus) REFERENCES buses(bus_id),"
-                    + "CONSTRAINT fk_customer FOREIGN KEY(booked_customer) REFERENCES customers(cust_id)"
+                    + "bus_seats INT NOT NULL,"
+                    + "booked_bus VARCHAR(200) NOT NULL,"
+                    + "booked_customer VARCHAR(200) NOT NULL, "
+                    + "FOREIGN KEY(booked_bus) REFERENCES buses(bus_id) on delete cascade on update cascade,"
+                    + "FOREIGN KEY(booked_customer) REFERENCES customers(cust_id) on delete cascade on update cascade"
                     + ")";
         return executeQuery(createTableQuery);
     }
@@ -166,6 +168,7 @@ public class DBConnection {
             
             while (rs.next()) {
                 String cust_id = rs.getString("cust_id");
+                int seat = rs.getInt("seat_nums");
                 Customer customer = new Customer(
                         rs.getString("cust_name"),
                         rs.getString("cust_phone_num"),
@@ -173,10 +176,8 @@ public class DBConnection {
                         rs.getString("cust_city"),
                         rs.getInt("cust_age")
                 );
-                Array arr = rs.getArray("seat_nums");
-                int[] seats = convertIntArr(arr);
                 customer.setCustomerId(cust_id);
-                customer.setBookedSeatArr(seats);
+                customer.setBookedSeat(seat);
                 customers.insert(customer);
             }
             
@@ -187,15 +188,12 @@ public class DBConnection {
         return customers;
     }
     
-    protected void updateCustomerBookedSeats(int[] bookedSeats, String customerID) {
-        Array array = convertArray(bookedSeats);
-        String updateQuery = "UPDATE customers SET seat_nums = '" + array +"' WHERE cust_id = '"+ customerID +"'";
+    protected void updateCustomerBookedSeat(int bookedSeat, String customerID) {
+        String updateQuery = "UPDATE customers SET seat_nums = '" + bookedSeat +"' WHERE cust_id = '"+ customerID +"'";
         executeQuery(updateQuery);
     }
 
     protected void insertCustomer(Customer cust) {
-        
-        Array arr = convertArray(cust.getBookedSeatArr());
         String insertQuery = "INSERT INTO customers ( "
             + "cust_id, cust_name, cust_phone_num, cust_email, cust_city, cust_age, seat_nums) "
             + "VALUES ("
@@ -204,7 +202,7 @@ public class DBConnection {
             + cust.getCustomerPhoneNumber() +"', "
             + "'"+ cust.getCustomerEmail() +"',"
             + " '"+ cust.getCustomerCity() +"',"
-            + " '"+ cust.getCustomerAge() +"', '"+ arr +"' )";
+            + " '"+ cust.getCustomerAge() +"', '"+ cust.getBookedSeat() +"' )";
         executeQuery(insertQuery);
     }
     
@@ -288,6 +286,13 @@ public class DBConnection {
     protected void deleteCustomer(int cust_id){
         String deleteQuery = "DELETE FROM customers WHERE cust_id = '"+ cust_id +"'";
         executeQuery(deleteQuery);
+    }
+    protected void insertBooking(Booking book) {
+        String insertQuery = "INSERT INTO booking(booking_id, bus_seats, booked_bus, booked_customer)"
+                + "VALUES ('"+ book.getBookingId() +"', '"+ book.getSeatNum() +"',"
+                + " ( SELECT bus_id FROM buses WHERE bus_id='"+ book.getBusId() +"'), "
+                + "( SELECT cust_id FROM customers WHERE cust_id= '"+ book.getCustId() +"'))";
+        executeQuery(insertQuery);
     }
 
 }

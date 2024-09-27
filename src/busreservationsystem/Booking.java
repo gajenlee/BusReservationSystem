@@ -7,6 +7,7 @@ import busreservationsystem.compands.Queue;
 import busreservationsystem.compands.AVLTree;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  *
@@ -20,6 +21,11 @@ public class Booking {
     private Queue<ArrayList> bookRequestQueue  = new Queue<>();
     private Queue<ArrayList> cancelRequestQueue  = new Queue<>();
     private Queue<ArrayList> replaceSeatRequestQueue  = new Queue<>();
+    private UUID uuid = UUID.randomUUID();
+    private String booking_id;
+    private String cust_id;
+    private String bus_id;
+    private int seatNum;
     
     private Customer customerSeatRequest;
     
@@ -53,27 +59,34 @@ public class Booking {
         }
     }
     
-    
-    public Booking(Bus object, Customer customer) {
-        this.targetedBusObject = object;
-        this.customer = customer;
-        
+    private void clearRequests() {
         bookSeatRequest();
         cancelSeatRequest();
         replaceSeatRequest();
     }
     
+    public Booking(Bus object, Customer customer) {
+        this.targetedBusObject = object;
+        this.customer = customer;
+        this.booking_id = uuid.toString();
+        this.cust_id = customer.getCustomerId();
+        this.bus_id = object.getBusId();
+        clearRequests();
+    }
+    
     public boolean bookASeat(int seatNum){
         ArrayList bookInfo = new ArrayList();
+        this.seatNum = seatNum;
         if (targetedBusObject.isSeatAvailable(seatNum)) {
             bookInfo.add(targetedBusObject);
             bookInfo.add(customer);
             bookInfo.add(seatNum);
             bookRequestQueue.enqueue(bookInfo);
+            clearRequests();
             return true;   
         }
         
-        bookSeatRequest();
+        clearRequests();
         return false;
     }
     
@@ -84,10 +97,11 @@ public class Booking {
             bookInfo.add(customer);
             bookInfo.add(seatNum);
             cancelRequestQueue.enqueue(bookInfo);
+            clearRequests();
             return true;   
         }
         
-        cancelSeatRequest();
+        clearRequests();
         return false;
     }
     
@@ -99,10 +113,11 @@ public class Booking {
             bookInfo.add(currentSeatNum);
             bookInfo.add(newSeatNum);
             replaceSeatRequestQueue.enqueue(bookInfo);
+            clearRequests();
             return true;
         }
         
-        replaceSeatRequest();
+        clearRequests();
         return false;
     }
     
@@ -111,5 +126,18 @@ public class Booking {
         if (custArray.length() > index + 1 && index + 1 < 0) {
            Customer besideCustomer  = custArray.getByIndex( index + 1);
         }
+    }
+    
+    public String getBookingId() {
+        return this.booking_id;
+    }
+    public String getBusId() {
+        return this.bus_id;
+    }
+    public String getCustId() {
+        return this.cust_id;
+    }
+    public int getSeatNum() {
+        return this.seatNum;
     }
 }

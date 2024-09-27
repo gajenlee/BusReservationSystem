@@ -13,7 +13,7 @@ import java.util.UUID;
  *
  * @author gajen
  */
-public class Booking {
+public class Booking implements Comparable<Booking> {
     
     private Bus targetedBusObject;
     private Customer customer;
@@ -140,4 +140,26 @@ public class Booking {
     public int getSeatNum() {
         return this.seatNum;
     }
+    
+    public void setBookingId(String bookingId) {
+        this.booking_id = bookingId;
+    }
+    public void setBusId(String busId) {
+        this.bus_id = busId;
+    }
+    public void setCustId(String custId) {
+        this.cust_id = custId;
+    }
+    public void setSeatNum(int seatNum) {
+        this.seatNum = seatNum;
+    }
+
+    
+    //    comapare to object number plate
+    @Override
+    public int compareTo(Booking other) {return this.booking_id.compareToIgnoreCase(other.getBookingId());}
+    
+    //    Objct print string
+    @Override
+    public String toString() {return "Booking [Booking ID = " + this.getBookingId() + "]";}
 }

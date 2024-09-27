@@ -294,5 +294,94 @@ public class DBConnection {
                 + "( SELECT cust_id FROM customers WHERE cust_id= '"+ book.getCustId() +"'))";
         executeQuery(insertQuery);
     }
+    
+    protected Customer getCustomerInfo(String customer_id) {
+        Customer customer = null;
+        Statement stmt = null;
+        String customerQuery = "SELECT * FROM customers WHERE cust_id='"+ customer_id +"'";
+        try{
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(customerQuery);
+
+            while (rs.next()) {
+                String cust_id = rs.getString("cust_id");
+                int seat = rs.getInt("seat_nums");
+                customer = new Customer(rs.getString("cust_name"),
+                  rs.getString("cust_phone_num"),
+                  rs.getString("cust_email"),
+                  rs.getString("cust_city"),
+                  rs.getInt("cust_age")
+                );
+                customer.setCustomerId(cust_id);
+                customer.setBookedSeat(seat);
+            }
+            
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return customer;
+    }
+    
+    protected Bus getBusInfo(String bus_id) {
+        Bus bus = null;
+        Statement stmt = null;
+        String customerQuery = "SELECT * FROM buses WHERE bus_id='"+ bus_id +"'";
+        try{
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(customerQuery);
+            
+            while (rs.next()) {
+                Array bus_array = rs.getArray("bus_array");
+                LinkedList<Integer> seats = convertLinkedList(bus_array);
+                bus = new Bus(rs.getString("bus_num_plate"),
+                    rs.getString("start_point"),
+                    rs.getString("end_point"),
+                    rs.getString("start_time"),
+                    rs.getInt("bus_seats"),
+                    rs.getFloat("seat_fare")
+                );
+                bus.setBusSeatArray(seats);
+                bus.setBusId(bus_id);
+            }
+            
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bus;
+    }
+    
+    protected AVLTree<Booking> loadBookings() {
+        AVLTree<Booking> bookings = new AVLTree<Booking>();
+        Statement stmt = null;
+        
+        try{
+            stmt = conn.createStatement();
+            String getAllSQL = "SELECT * FROM booking";
+            ResultSet rs = stmt.executeQuery(getAllSQL);
+            
+            while (rs.next()) {
+                
+                String cust_id = rs.getString("booked_customer");
+                String bus_id = rs.getString("booked_bus");
+                String booking_id = rs.getString("booking_id");
+                int bus_seat = rs.getInt("bus_seats");
+                
+                Customer customer = getCustomerInfo(cust_id);
+                Bus bus = getBusInfo(bus_id);
+                bus.bookSeat(bus_seat);
+                Booking booking = new Booking(bus, customer);
+                booking.setBookingId(booking_id);
+                booking.setSeatNum(bus_seat);
+                bookings.insert(booking);
+                System.out.println("The Booking data added");
+                
+            }
+            
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return bookings;
+    }
 
 }

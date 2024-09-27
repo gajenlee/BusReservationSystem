@@ -6,6 +6,7 @@ package busreservationsystem.compands;
 
 import busreservationsystem.Bus;
 import busreservationsystem.Customer;
+import busreservationsystem.Booking;
 
 /**
  *

@@ -16,11 +16,13 @@ public class MainBusReservationSystemRunner extends ReservationInterface{
     
     private AVLTree<Bus> busTree;
     private AVLTree<Customer> customerTree;
+    private AVLTree<Booking> bookings;
     
     public MainBusReservationSystemRunner() {
         initialize();
         this.busTree = loadAllDataFromBus();
         this.customerTree = loadAllDataFromCustomer();
+        this.bookings = loadBookings();
     }
     
     public void mainSystemLoop() {
@@ -233,6 +235,7 @@ public class MainBusReservationSystemRunner extends ReservationInterface{
     public void searchAndDisplayInfo() {
         String busName = getStringVal("\nEnter the bus number plate: ");
         Bus bus = busTree.binarySearchByString(busName);
+        
         bus.displayBusInfo();
         System.out.println("Seat Fee: " + bus.getFare());
         

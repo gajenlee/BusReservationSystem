@@ -2,13 +2,14 @@ package busreservationsystem.compands;
 
 import busreservationsystem.Bus;
 import busreservationsystem.Customer;
-import busreservationsystem.compands.AVLTree;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
+import java.sql.Array;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DBConnection {
     
@@ -22,7 +23,7 @@ public class DBConnection {
     protected Connection conn = null;
     
 
-    public DBConnection() {        
+    public DBConnection() {
         try {
             // 1. Register PostgreSQL JDBC driver
             Class.forName("org.postgresql.Driver");
@@ -39,7 +40,7 @@ public class DBConnection {
             
     }
     
-    private boolean createDatabase() {
+    protected boolean createDatabase() {
         Statement stmt = null;
         try{
             stmt = conn.createStatement();
@@ -82,26 +83,27 @@ public class DBConnection {
     
     protected boolean createBusTable() {
         String createTableQuery = "CREATE TABLE IF NOT EXISTS buses ("
-                    + "bus_id SERIAL PRIMARY KEY, "
+                    + "bus_id VARCHAR(200) PRIMARY KEY, "
                     + "bus_num_plate VARCHAR(100) NOT NULL, "
                     + "start_point VARCHAR(200) NOT NULL, "
                     + "end_point VARCHAR(200) NOT NULL, "
-                    + "start_time TIME NOT NULL, "
+                    + "start_time VARCHAR(100) NOT NULL, "
                     + "seat_fare REAL NOT NULL, "
-                    + "bus_seats INT NOT NULL"
+                    + "bus_seats INT NOT NULL,"
+                    + "bus_array INTEGER[] NOT NULL"
                     + ")";
         return executeQuery(createTableQuery);
     }
     
     protected boolean createCustomerTable() {
         String createTableQuery = "CREATE TABLE IF NOT EXISTS customers ("
-                    + "cust_id SERIAL PRIMARY KEY, "
+                    + "cust_id VARCHAR(200) PRIMARY KEY, "
                     + "cust_name VARCHAR(100) NOT NULL, "
                     + "cust_phone_num VARCHAR(200) NOT NULL, "
                     + "cust_email VARCHAR(200) NOT NULL, "
                     + "cust_city VARCHAR(100) NOT NULL, "
                     + "cust_age INT NOT NULL, "
-                    + "seat_nums integer[3]"
+                    + "seat_nums INTEGER[]"
                     + ")";
         
         return executeQuery(createTableQuery);
@@ -109,9 +111,9 @@ public class DBConnection {
     
     protected boolean createBookingTable() {
         String createTableQuery = "CREATE TABLE IF NOT EXISTS booking ("
-                    + "booking_id SERIAL PRIMARY KEY, "
-                    + "booked_bus SERIAL, "
-                    + "booked_customer SERIAL, "
+                    + "booking_id VARCHAR(200) PRIMARY KEY, "
+                    + "booked_bus VARCHAR(200), "
+                    + "booked_customer VARCHAR(200), "
                     + "CONSTRAINT fk_buses FOREIGN KEY(booked_bus) REFERENCES buses(bus_id),"
                     + "CONSTRAINT fk_customer FOREIGN KEY(booked_customer) REFERENCES customers(cust_id)"
                     + ")";
@@ -129,6 +131,9 @@ public class DBConnection {
             ResultSet rs = stmt.executeQuery(getAllSQL);
 
             while (rs.next()) {
+                String bus_id = rs.getString("bus_id");
+                Array bus_array = rs.getArray("bus_array");
+                LinkedList<Integer> seats = convertLinkedList(bus_array);
                 Bus bus = new Bus(
                     rs.getString("bus_num_plate"),
                     rs.getString("start_point"),
@@ -137,6 +142,8 @@ public class DBConnection {
                     rs.getInt("bus_seats"),
                     rs.getFloat("seat_fare")
                 );
+                bus.setBusSeatArray(seats);
+                bus.setBusId(bus_id);
                 buses.insert(bus);
             }
             
@@ -154,10 +161,11 @@ public class DBConnection {
         try{
             stmt = conn.createStatement();
             
-            String getAllSQL = "SELECT * FROM buses";
+            String getAllSQL = "SELECT * FROM customers";
             ResultSet rs = stmt.executeQuery(getAllSQL);
             
             while (rs.next()) {
+                String cust_id = rs.getString("cust_id");
                 Customer customer = new Customer(
                         rs.getString("cust_name"),
                         rs.getString("cust_phone_num"),
@@ -165,6 +173,10 @@ public class DBConnection {
                         rs.getString("cust_city"),
                         rs.getInt("cust_age")
                 );
+                Array arr = rs.getArray("seat_nums");
+                int[] seats = convertIntArr(arr);
+                customer.setCustomerId(cust_id);
+                customer.setBookedSeatArr(seats);
                 customers.insert(customer);
             }
             
@@ -175,16 +187,107 @@ public class DBConnection {
         return customers;
     }
     
-}
+    protected void updateCustomerBookedSeats(int[] bookedSeats, String customerID) {
+        Array array = convertArray(bookedSeats);
+        String updateQuery = "UPDATE customers SET seat_nums = '" + array +"' WHERE cust_id = '"+ customerID +"'";
+        executeQuery(updateQuery);
+    }
 
-class Main {
-    
-    public static void main(String [] args) {
-        DBConnection conn = new DBConnection();
+    protected void insertCustomer(Customer cust) {
         
-        conn.createBusTable();
-        conn.createCustomerTable();
-        conn.createBookingTable();
+        Array arr = convertArray(cust.getBookedSeatArr());
+        String insertQuery = "INSERT INTO customers ( "
+            + "cust_id, cust_name, cust_phone_num, cust_email, cust_city, cust_age, seat_nums) "
+            + "VALUES ("
+            + "'"+ cust.getCustomerId() +"', "
+            + "'"+ cust.getCustomerName() +"', '"
+            + cust.getCustomerPhoneNumber() +"', "
+            + "'"+ cust.getCustomerEmail() +"',"
+            + " '"+ cust.getCustomerCity() +"',"
+            + " '"+ cust.getCustomerAge() +"', '"+ arr +"' )";
+        executeQuery(insertQuery);
     }
     
+    private Array convertArray(int[] seats) {
+        Array sqlArray = null;
+        try {
+            Integer[] quantitiesWrapper = new Integer[seats.length];
+            for (int i = 0; i < seats.length; i++) {
+                quantitiesWrapper[i] = seats[i];
+            }
+            sqlArray = conn.createArrayOf("INTEGER", quantitiesWrapper);
+        } catch (SQLException ex) {
+            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return sqlArray;
+    }
+    
+    private int[] convertIntArr(Array array){
+        Integer[] seatWrapper = new Integer[0];
+        try {
+            seatWrapper = (Integer[]) array.getArray();
+        } catch (SQLException ex) {
+            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        int[] seats = new int[seatWrapper.length];
+        for (int i=0; i < seatWrapper.length; i++) {
+            seats[i] = seatWrapper[i];
+        }
+        return seats;
+    }
+
+    private Array convertArray(LinkedList<Integer> seats) {
+        Array sqlArray = null;
+        try {
+            Integer[] quantitiesWrapper = new Integer[seats.length()];
+            for (int i = 0; i < seats.length(); i++) {
+                quantitiesWrapper[i] = seats.get(i);
+            }
+            sqlArray = conn.createArrayOf("INTEGER", quantitiesWrapper);
+        } catch (SQLException ex) {
+            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return sqlArray;
+    }
+    
+    private LinkedList<Integer> convertLinkedList(Array array){
+        Integer[] seatWrapper = new Integer[0];
+        try {
+            seatWrapper = (Integer[]) array.getArray();
+        } catch (SQLException ex) {
+            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        LinkedList<Integer> seats = new LinkedList<>(seatWrapper.length);
+        for (int i=0; i < seatWrapper.length; i++) {
+            seats.push(seatWrapper[i]);
+        }
+        return seats;
+    }
+    
+    protected void insertBus(Bus bus) {
+        LinkedList<Integer> seats = bus.getBusSeatsArray();
+        Array arr = convertArray(seats);
+        
+        String insertQuery = "INSERT INTO buses ( "
+            + "bus_id, bus_num_plate, start_point, end_point, start_time, seat_fare, bus_seats, bus_array)"
+            + "VALUES ( "
+            + "'"+ bus.getBusId() +"', "
+            + "'"+ bus.getNumberPlate() +"', '"
+            + bus.getStartPoint() +"', "
+            + "'"+ bus.getEndPoint() +"',"
+            + " '"+ bus.getStartTime() +"',"
+            + " '"+ bus.getFare() +"', '"+ bus.getTotalSeats() +"',"
+            + " '"+ arr +"' )";
+        executeQuery(insertQuery);
+    }
+    
+    protected void deleteBus(int bus_id){
+        String deleteQuery = "DELETE FROM buses WHERE bus_id = '"+ bus_id +"'";
+        executeQuery(deleteQuery);
+    }
+    protected void deleteCustomer(int cust_id){
+        String deleteQuery = "DELETE FROM customers WHERE cust_id = '"+ cust_id +"'";
+        executeQuery(deleteQuery);
+    }
+
 }

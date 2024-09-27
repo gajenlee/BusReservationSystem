@@ -5,6 +5,7 @@
 package busreservationsystem;
 
 import busreservationsystem.compands.LinkedList;
+import java.util.UUID;
 
 /**
  *
@@ -20,6 +21,8 @@ public class Bus implements Comparable<Bus> {
     private String endPoint = "";
     private String startTime = "";
     private float fare;
+    private String bus_id;
+    private UUID uuid = UUID.randomUUID();
     
     private void assignEmptySeatValues() {
         for(int i = 0; i<TOTAL_SEAT; i++){
@@ -29,6 +32,7 @@ public class Bus implements Comparable<Bus> {
     
     
     public Bus(String number, String startPoint, String endPoint, String startTime, int total_seat, float fare){
+        this.bus_id = uuid.toString();
         this.busNumberPlate = number;
         this.TOTAL_SEAT = total_seat;
         this.startPoint = startPoint;
@@ -45,11 +49,11 @@ public class Bus implements Comparable<Bus> {
     
     //    comapare to object number plate
     @Override
-    public int compareTo(Bus other) {return this.busNumberPlate.compareToIgnoreCase(other.busNumberPlate);}
+    public int compareTo(Bus other) {return this.busNumberPlate.compareToIgnoreCase(other.getNumberPlate());}
     
     //    Objct print string
     @Override
-    public String toString() {return "Bus [Number Plate = " + busNumberPlate + "]";}
+    public String toString() {return "Bus [Bus ID = " + bus_id + "]";}
     
     //    get infromation
     public String getNumberPlate() {return busNumberPlate;}
@@ -126,8 +130,18 @@ public class Bus implements Comparable<Bus> {
         System.out.println(txt.toString());
         
     }
-
-    String getCustomerName() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    
+    public String getBusId() {
+        return bus_id;
+    } 
+    public void setBusId(String bus_id) {
+        this.bus_id = bus_id;
+    }
+    
+    public void setBusSeatArray(LinkedList<Integer> seats) {
+        this.seats = seats;
+    }
+    public LinkedList<Integer> getBusSeatsArray(){
+        return seats;
     }
 }

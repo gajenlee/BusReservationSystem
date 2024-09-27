@@ -9,11 +9,12 @@ import busreservationsystem.compands.LinkedList;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import busreservationsystem.compands.DBConnection;
 /**
  *
  * @author gajen
  */
-public class ReservationInterface {
+public class ReservationInterface extends DBConnection {
     
     public static void print_art() {
         String art = "██████  ███████ ███████ ███████ ██████  ██    ██  █████  ████████ ██  ██████  ███    ██ \n" +
@@ -126,10 +127,9 @@ public class ReservationInterface {
         print_art();
         System.out.println(" ================================== Bus Reservation System | Register ================================== \n");
         System.out.println("1. Register");
-        System.out.println("2. Already Register");
-        System.out.println("3. Back");
+        System.out.println("2. Back");
         
-        System.out.print("\nEnter the value (1, 2, 3) > ");
+        System.out.print("\nEnter the value (1, 2) > ");
         getInput = scan.nextInt();
         
         return getInput;

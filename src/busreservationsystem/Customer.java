@@ -7,12 +7,17 @@ package busreservationsystem;
  *
  * @author gajen
  */
+import java.util.UUID;
+
 public class Customer implements Comparable<Customer> {
     private String custName;
     private String custPhoneNumber;
     private String custEmail;
     private String custCity;
     private int custAge;
+    private int[] booked_seats = new int[3];
+    private String customerId;
+    private UUID uuid = UUID.randomUUID();
     
     
     public Customer(String name, String phoneNum, String email, String city, int age) {
@@ -21,18 +26,19 @@ public class Customer implements Comparable<Customer> {
         setCustomerEmail(email);
         setCustomerCity(city);
         setCustomerAge(age);
+        this.customerId = uuid.toString();
     }
     
     
     //    comapare to object number plate
     @Override
     public int compareTo(Customer other) {
-        return this.custName.compareToIgnoreCase(other.getCustomerName());
+        return this.customerId.compareToIgnoreCase(other.getCustomerId());
     }
     
     //    Objct print string
     @Override
-    public String toString() {return "Bus [Number Plate = " + custName + "]";}
+    public String toString() {return "Customer [ID = " + customerId + "]";}
     
     //    Getters
     public String getCustomerName(){
@@ -66,5 +72,19 @@ public class Customer implements Comparable<Customer> {
     }
     public void setCustomerAge(int age){
         custAge = age;
+    }
+    
+    public void setBookedSeatArr(int[] seats){
+        this.booked_seats = seats;
+    }
+    public int[] getBookedSeatArr(){
+        return this.booked_seats;
+    }
+    
+    public String getCustomerId() {
+        return customerId;
+    } 
+    public void setCustomerId(String cust_id) {
+        this.customerId = cust_id;
     }
 }

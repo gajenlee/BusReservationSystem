@@ -6,15 +6,24 @@ package busreservationsystem;
  */
 import busreservationsystem.compands.LinkedList;
 import busreservationsystem.compands.AVLTree;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author gajen
  */
-public class MainBusReservationSystemRunner extends  ReservationInterface{
+public class MainBusReservationSystemRunner extends ReservationInterface{
     
-    private AVLTree<Bus> busTree = new AVLTree<>();
-    private AVLTree<Customer> customerTree = new AVLTree<>();
+    private AVLTree<Bus> busTree;
+    private AVLTree<Customer> customerTree;
     
+    public MainBusReservationSystemRunner() {
+        initialize();
+        this.busTree = loadAllDataFromBus();
+        this.customerTree = loadAllDataFromCustomer();
+    }
     
     public void mainSystemLoop() {
         boolean mainLoop = true;
@@ -30,17 +39,6 @@ public class MainBusReservationSystemRunner extends  ReservationInterface{
                     if (bookingconnecter() == -1) continue;
                     
                 } else if (getBookInput == 2) {
-                    if (alreadyRegisteredCustomer()) {
-                        if (bookingconnecter() == -1) continue;
-                    } else {
-                        LinkedList<String> array = registerInterface();
-                        registerCustomer(array);
-                        System.out.println("The Customer Sccueefully Registered .... ");
-                        waitConsole();
-                        if (bookingconnecter() == -1) continue;
-                    }
-                    
-                } else if (getBookInput == 3) {
                     continue;
                 } else {
                     mainLoop = false;
@@ -122,12 +120,9 @@ public class MainBusReservationSystemRunner extends  ReservationInterface{
     }
     
     public void registerCustomer(LinkedList<String> arr) {
-        customerTree.insert(new Customer(
-                            arr.get(0), 
-                            arr.get(1), 
-                            arr.get(2), 
-                            arr.get(3), 
-                            Integer.parseInt(arr.get(4))));
+        Customer customer = new Customer(arr.get(0), arr.get(1), arr.get(2), arr.get(3), Integer.parseInt(arr.get(4)));
+        customerTree.insert(customer);
+        insertCustomer(customer);
     }
     public boolean alreadyRegisteredCustomer() {
         String customerName = getStringVal("\nEnter the your name: ");
@@ -141,14 +136,15 @@ public class MainBusReservationSystemRunner extends  ReservationInterface{
     public void searchBusAndGetInfo(){}
     
     public void registerABus(LinkedList<String> arr) {
-        busTree.insert(new Bus(
+        Bus newBus = new Bus(
                             arr.get(0), 
                             arr.get(1), 
                             arr.get(2), 
                             arr.get(3),
                             Integer.parseInt(arr.get(4)),
-                            Float.parseFloat(arr.get(5)))
-                            );
+                            Float.parseFloat(arr.get(5)));
+        busTree.insert(newBus);
+        insertBus(newBus);
     }
     public int searchBus() {
         String busName = getStringVal("\nEnter the bus number plate: ");
@@ -242,4 +238,10 @@ public class MainBusReservationSystemRunner extends  ReservationInterface{
         waitConsole();
     }
     
+    private void initialize() {
+        createDatabase();
+        createBusTable();
+        createCustomerTable();
+        createBookingTable();
+    } 
 }

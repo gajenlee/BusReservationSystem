@@ -159,6 +159,8 @@ public class Booking implements Comparable<Booking> {
     @Override
     public int compareTo(Booking other) {return this.booking_id.compareToIgnoreCase(other.getBookingId());}
     
+    public int compareBusTo(Booking other) { return this.bus_id.compareTo(other.getBusId());}
+    
     //    Objct print string
     @Override
     public String toString() {return "Booking [Booking ID = " + this.getBookingId() + "]";}

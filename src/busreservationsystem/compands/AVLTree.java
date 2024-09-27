@@ -6,7 +6,6 @@ package busreservationsystem.compands;
 
 import busreservationsystem.Bus;
 import busreservationsystem.Customer;
-import busreservationsystem.Booking;
 
 /**
  *
@@ -218,6 +217,7 @@ public class AVLTree<ListType extends Comparable<ListType>> {
         }
         return null;
     }
+    
     
     private int indexOf(Node node, ListType data, int index) {
         if (node == null) return -1;

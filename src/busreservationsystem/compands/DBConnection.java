@@ -383,5 +383,25 @@ public class DBConnection {
         
         return bookings;
     }
+    
+    protected LinkedList<Integer> findBookedSeats(String busId){
+        String busQuery = "SELECT * FROM booking WHERE booked_bus='"+ busId +"'";
+        Statement stmt = null;
+        LinkedList<Integer> bookedSeats = new LinkedList<>();
+        
+        try{
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(busQuery);
+            
+            while (rs.next()) {
+                int bus_seat = rs.getInt("bus_seats");
+                bookedSeats.push(bus_seat);                
+            }
+            
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bookedSeats;
+    }
 
 }

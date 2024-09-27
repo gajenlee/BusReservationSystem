@@ -127,14 +127,7 @@ public class MainBusReservationSystemRunner extends ReservationInterface{
         insertCustomer(customer);
         return customer;
     }
-    public boolean alreadyRegisteredCustomer() {
-        String customerName = getStringVal("\nEnter the your name: ");
-        Customer newCustomer = customerTree.binarySearchByStringCustomer(customerName);
-        if (newCustomer == null) {
-            return false;
-        }
-        return true;
-    }
+
     
     public void searchBusAndGetInfo(){}
     
@@ -235,7 +228,10 @@ public class MainBusReservationSystemRunner extends ReservationInterface{
     public void searchAndDisplayInfo() {
         String busName = getStringVal("\nEnter the bus number plate: ");
         Bus bus = busTree.binarySearchByString(busName);
-        
+        LinkedList<Integer> bookedList = findBookedSeats(bus.getBusId());
+        for (int i =0; i<bookedList.length(); i++){
+            bus.bookSeat(bookedList.get(i));
+        }
         bus.displayBusInfo();
         System.out.println("Seat Fee: " + bus.getFare());
         

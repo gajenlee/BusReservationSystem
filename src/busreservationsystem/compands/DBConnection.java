@@ -403,5 +403,16 @@ public class DBConnection {
         }
         return bookedSeats;
     }
-
+    
+    protected void deleteBooking(Booking book) {
+        String deleteBookingQuery = "DELETE FROM booking WHERE booking_id = "
+                + "'"+ book.getBookingId() +"'";
+        executeQuery(deleteBookingQuery);
+    }
+    
+    protected void updateBooking(Booking book, int seatNum) {
+        String deleteBookingQuery = "UPDATE booking SET bus_seats='"+ seatNum +"'"
+                + "  WHERE booking_id = '"+ book.getBookingId() +"'";
+        executeQuery(deleteBookingQuery);
+    }
 }

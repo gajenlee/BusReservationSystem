@@ -93,7 +93,6 @@ public class MainBusReservationSystemRunner extends ReservationInterface{
         int seatNum = getSeatNumber("");
         Booking book = new Booking(bus, cust);
         book.bookASeat(seatNum);
-        insertBooking(book);
         System.out.println("Seat Booked .... ");
         waitConsole();
     }

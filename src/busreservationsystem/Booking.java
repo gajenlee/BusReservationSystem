@@ -5,6 +5,7 @@
 package busreservationsystem;
 import busreservationsystem.compands.Queue;
 import busreservationsystem.compands.AVLTree;
+import busreservationsystem.compands.DBConnection;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -13,7 +14,7 @@ import java.util.UUID;
  *
  * @author gajen
  */
-public class Booking implements Comparable<Booking> {
+public class Booking extends DBConnection  implements Comparable<Booking> {
     
     private Bus targetedBusObject;
     private Customer customer;
@@ -36,6 +37,7 @@ public class Booking implements Comparable<Booking> {
             Customer customerSeatRequest = (Customer) firstArray.get(1);
             int seatNumberRequest = (Integer) firstArray.get(firstArray.size() - 1);
             busSeatRequest.bookSeat(seatNumberRequest);
+            insertBooking(this);
         }
     }
     private void cancelSeatRequest() {
@@ -45,6 +47,7 @@ public class Booking implements Comparable<Booking> {
             Customer customerSeatRequest = (Customer) firstArray.get(1);
             int seatNumberRequest = (Integer) firstArray.get(firstArray.size() - 1);
             busSeatRequest.cancelSeat(seatNumberRequest);
+            deleteBooking(this);
         }
     }
     private void replaceSeatRequest() {
@@ -56,6 +59,7 @@ public class Booking implements Comparable<Booking> {
             int newSeatRequest = (Integer) firstArray.get(firstArray.size() - 1);
             busSeatRequest.cancelSeat(currentSeatRequest);
             busSeatRequest.bookSeat(newSeatRequest);
+            updateBooking(this, newSeatRequest);
         }
     }
     

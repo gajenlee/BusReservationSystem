@@ -6,6 +6,7 @@ package busreservationsystem;
 import busreservationsystem.compands.Queue;
 import busreservationsystem.compands.AVLTree;
 import busreservationsystem.compands.DBConnection;
+import busreservationsystem.compands.LinkedList;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -29,7 +30,7 @@ public class Booking extends DBConnection  implements Comparable<Booking> {
     private int seatNum;
     
     private Customer customerSeatRequest;
-    
+      
     private void bookSeatRequest() {
         if (bookRequestQueue.lenght() != 0) {
             ArrayList firstArray = bookRequestQueue.dequeue();
@@ -47,7 +48,7 @@ public class Booking extends DBConnection  implements Comparable<Booking> {
             Customer customerSeatRequest = (Customer) firstArray.get(1);
             int seatNumberRequest = (Integer) firstArray.get(firstArray.size() - 1);
             busSeatRequest.cancelSeat(seatNumberRequest);
-            deleteBooking(this);
+            deleteBooking(busSeatRequest, customerSeatRequest);
         }
     }
     private void replaceSeatRequest() {
@@ -59,11 +60,11 @@ public class Booking extends DBConnection  implements Comparable<Booking> {
             int newSeatRequest = (Integer) firstArray.get(firstArray.size() - 1);
             busSeatRequest.cancelSeat(currentSeatRequest);
             busSeatRequest.bookSeat(newSeatRequest);
-            updateBooking(this, newSeatRequest);
+            updateBooking(busSeatRequest, customerSeatRequest, newSeatRequest);
         }
     }
     
-    private void clearRequests() {
+    public void sendRequests() {
         bookSeatRequest();
         cancelSeatRequest();
         replaceSeatRequest();
@@ -75,53 +76,44 @@ public class Booking extends DBConnection  implements Comparable<Booking> {
         this.booking_id = uuid.toString();
         this.cust_id = customer.getCustomerId();
         this.bus_id = object.getBusId();
-        clearRequests();
+        sendRequests();
     }
     
     public boolean bookASeat(int seatNum){
         ArrayList bookInfo = new ArrayList();
         this.seatNum = seatNum;
-        if (targetedBusObject.isSeatAvailable(seatNum)) {
+        if (targetedBusObject != null && customer != null) {
             bookInfo.add(targetedBusObject);
             bookInfo.add(customer);
             bookInfo.add(seatNum);
             bookRequestQueue.enqueue(bookInfo);
-            clearRequests();
             return true;   
         }
-        
-        clearRequests();
         return false;
     }
     
     public boolean cancelASeat(int seatNum) {
         ArrayList bookInfo = new ArrayList();
-        if (targetedBusObject.isSeatAvailable(seatNum)) {
+        if (isSeat(targetedBusObject, seatNum)) {
             bookInfo.add(targetedBusObject);
             bookInfo.add(customer);
             bookInfo.add(seatNum);
             cancelRequestQueue.enqueue(bookInfo);
-            clearRequests();
             return true;   
         }
-        
-        clearRequests();
         return false;
     }
     
     public boolean replaceASeat(int currentSeatNum, int newSeatNum){
         ArrayList bookInfo = new ArrayList();
-        if (targetedBusObject.isSeatAvailable(newSeatNum)) {
+        if (isSeat(targetedBusObject, currentSeatNum)) {
             bookInfo.add(targetedBusObject);
             bookInfo.add(customer);
             bookInfo.add(currentSeatNum);
             bookInfo.add(newSeatNum);
             replaceSeatRequestQueue.enqueue(bookInfo);
-            clearRequests();
             return true;
         }
-        
-        clearRequests();
         return false;
     }
     
@@ -156,6 +148,16 @@ public class Booking extends DBConnection  implements Comparable<Booking> {
     }
     public void setSeatNum(int seatNum) {
         this.seatNum = seatNum;
+    }
+    
+    public boolean isSeat(Bus bus, int seatNum) {
+        LinkedList<Integer> booked = findBookedSeats(bus.getBusId());
+        for (int i =0; i<booked.length(); i++) {
+            if (booked.get(i) == seatNum) {
+                return true;
+            }
+        }
+        return false;
     }
 
     

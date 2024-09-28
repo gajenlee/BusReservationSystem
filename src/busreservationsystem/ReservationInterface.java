@@ -127,9 +127,10 @@ public class ReservationInterface extends DBConnection {
         print_art();
         System.out.println(" ================================== Bus Reservation System | Register ================================== \n");
         System.out.println("1. Register");
-        System.out.println("2. Back");
+        System.out.println("2. Already Registered");
+        System.out.println("3. Back");
         
-        System.out.print("\nEnter the value (1, 2) > ");
+        System.out.print("\nEnter the value (1, 2, 3) > ");
         getInput = scan.nextInt();
         
         return getInput;

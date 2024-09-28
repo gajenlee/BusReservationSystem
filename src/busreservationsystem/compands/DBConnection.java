@@ -103,8 +103,7 @@ public class DBConnection {
                     + "cust_phone_num VARCHAR(200) NOT NULL, "
                     + "cust_email VARCHAR(200) NOT NULL, "
                     + "cust_city VARCHAR(100) NOT NULL, "
-                    + "cust_age INT NOT NULL, "
-                    + "seat_nums INT"
+                    + "cust_age INT NOT NULL "
                     + ")";
         
         return executeQuery(createTableQuery);
@@ -168,7 +167,6 @@ public class DBConnection {
             
             while (rs.next()) {
                 String cust_id = rs.getString("cust_id");
-                int seat = rs.getInt("seat_nums");
                 Customer customer = new Customer(
                         rs.getString("cust_name"),
                         rs.getString("cust_phone_num"),
@@ -177,7 +175,6 @@ public class DBConnection {
                         rs.getInt("cust_age")
                 );
                 customer.setCustomerId(cust_id);
-                customer.setBookedSeat(seat);
                 customers.insert(customer);
             }
             
@@ -195,14 +192,14 @@ public class DBConnection {
 
     protected void insertCustomer(Customer cust) {
         String insertQuery = "INSERT INTO customers ( "
-            + "cust_id, cust_name, cust_phone_num, cust_email, cust_city, cust_age, seat_nums) "
+            + "cust_id, cust_name, cust_phone_num, cust_email, cust_city, cust_age) "
             + "VALUES ("
             + "'"+ cust.getCustomerId() +"', "
             + "'"+ cust.getCustomerName() +"', '"
             + cust.getCustomerPhoneNumber() +"', "
             + "'"+ cust.getCustomerEmail() +"',"
             + " '"+ cust.getCustomerCity() +"',"
-            + " '"+ cust.getCustomerAge() +"', '"+ cust.getBookedSeat() +"' )";
+            + " '"+ cust.getCustomerAge() +"')";
         executeQuery(insertQuery);
     }
     
@@ -305,7 +302,6 @@ public class DBConnection {
 
             while (rs.next()) {
                 String cust_id = rs.getString("cust_id");
-                int seat = rs.getInt("seat_nums");
                 customer = new Customer(rs.getString("cust_name"),
                   rs.getString("cust_phone_num"),
                   rs.getString("cust_email"),
@@ -313,7 +309,6 @@ public class DBConnection {
                   rs.getInt("cust_age")
                 );
                 customer.setCustomerId(cust_id);
-                customer.setBookedSeat(seat);
             }
             
         }catch (SQLException e) {
@@ -404,15 +399,36 @@ public class DBConnection {
         return bookedSeats;
     }
     
-    protected void deleteBooking(Booking book) {
-        String deleteBookingQuery = "DELETE FROM booking WHERE booking_id = "
-                + "'"+ book.getBookingId() +"'";
+    protected String findBookingCustomer(Bus bus, Customer cust) {
+        String bookId = null;
+        Statement stmt = null;
+        String bookedQuery = "SELECT * FROM booking WHERE "
+                + "booked_bus = '"+ bus.getBusId() +"' AND "
+                + "booked_customer = '"+ cust.getCustomerId() +"'";
+        try{
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(bookedQuery);
+            
+            while (rs.next()) {
+                bookId = rs.getString("booking_id");
+            }
+            
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return bookId;
+    }
+    
+    protected void deleteBooking(Bus bus, Customer customer) {
+        String deleteBookingQuery = "DELETE FROM booking "
+               + "  WHERE booked_bus = '"+ bus.getBusId() +"' and booked_customer = '"+ customer.getCustomerId() +"'";
         executeQuery(deleteBookingQuery);
     }
     
-    protected void updateBooking(Booking book, int seatNum) {
+    protected void updateBooking(Bus bus, Customer customer, int seatNum) {
         String deleteBookingQuery = "UPDATE booking SET bus_seats='"+ seatNum +"'"
-                + "  WHERE booking_id = '"+ book.getBookingId() +"'";
+                + "  WHERE booked_bus = '"+ bus.getBusId() +"' and booked_customer = '"+ customer.getCustomerId() +"'";
         executeQuery(deleteBookingQuery);
     }
 }

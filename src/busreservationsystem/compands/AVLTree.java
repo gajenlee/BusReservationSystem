@@ -4,6 +4,7 @@
  */
 package busreservationsystem.compands;
 
+import busreservationsystem.Booking;
 import busreservationsystem.Bus;
 import busreservationsystem.Customer;
 
@@ -207,10 +208,23 @@ public class AVLTree<ListType extends Comparable<ListType>> {
     private ListType binarySearchByStringCustomer(String targetValue, Node node) {
         if (node != null) {
             Customer targetBus = (Customer) node.data;
-            if(targetValue.compareTo(targetBus.getCustomerName()) < 0) {
+            if(targetValue.compareToIgnoreCase(targetBus.getCustomerName()) < 0) {
                 return binarySearchByStringCustomer(targetValue, node.left);
-            } else if (targetValue.compareTo(targetBus.getCustomerName()) > 0){
+            } else if (targetValue.compareToIgnoreCase(targetBus.getCustomerName()) > 0){
                 return binarySearchByStringCustomer(targetValue, node.right);
+            } else {
+                return node.data;
+            }
+        }
+        return null;
+    }
+    private ListType binarySearchByStringBooking(String targetValue, Node node) {
+        if (node != null) {
+            Booking targetBus = (Booking) node.data;
+            if(targetValue.compareTo(targetBus.getBookingId()) < 0) {
+                return binarySearchByStringBooking(targetValue, node.left);
+            } else if (targetValue.compareTo(targetBus.getBookingId()) > 0){
+                return binarySearchByStringBooking(targetValue, node.right);
             } else {
                 return node.data;
             }
@@ -243,6 +257,10 @@ public class AVLTree<ListType extends Comparable<ListType>> {
     
     public ListType binarySearchByStringCustomer(String target) {
         return binarySearchByStringCustomer(target, root);
+    }
+    
+    public ListType binarySearchByStringBooking(String target) {
+        return  binarySearchByStringBooking(target, root);
     }
     
     //    call the search function

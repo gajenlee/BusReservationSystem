@@ -15,7 +15,6 @@ public class Customer implements Comparable<Customer> {
     private String custEmail;
     private String custCity;
     private int custAge;
-    private int booked_seat = 0;
     private String customerId;
     private UUID uuid = UUID.randomUUID();
     
@@ -73,14 +72,7 @@ public class Customer implements Comparable<Customer> {
     public void setCustomerAge(int age){
         custAge = age;
     }
-    
-    public void setBookedSeat(int seats){
-        this.booked_seat = seats;
-    }
-    public int getBookedSeat(){
-        return this.booked_seat;
-    }
-    
+        
     public String getCustomerId() {
         return customerId;
     } 

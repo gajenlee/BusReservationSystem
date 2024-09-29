@@ -27,88 +27,99 @@ public class MainBusReservationSystemRunner extends ReservationInterface{
     
     public void mainSystemLoop() {
         boolean mainLoop = true;
+        OUTER:
         while (mainLoop) {
             int mainInput = mainInterface();
-            if (mainInput == 1){
-                int getBookInput = bookingInterface();
-                if (getBookInput == 1){
-                    LinkedList<String> array = registerInterface();
-                    Customer customer = registerCustomer(array);
-                    System.out.println("The Customer Sccueefully Registered .... ");
-                    waitConsole();
-                    if (bookingconnecter(customer) == -1) continue;
-                }else if (getBookInput == 2) {
-                    String customerName = getStringVal("Reistered customer name: ");
-                    Customer customer = customerTree.binarySearchByStringCustomer(customerName);
-                    if (customer != null){
-                        String custId = customer.getCustomerId();
-                        String customerRegisteredBus = getStringVal("Reistered bus number plate: ");
-                        Bus registeredBus = busTree.binarySearchByString(customerRegisteredBus);
-                        if (registeredBus != null){
-                            String bookingId = findBookingCustomer(registeredBus, customer);
-                            Booking book = bookings.binarySearchByStringBooking(bookingId);
-                            if (book != null) {
-                                System.out.println("The Customer Sccueefully Found .... ");
+            switch (mainInput) {
+                case 1 -> {
+                    int getBookInput = bookingInterface();
+                    switch (getBookInput) {
+                        case 1 ->                         {
+                                LinkedList<String> array = registerInterface();
+                                Customer customer = registerCustomer(array);
+                                System.out.println("The Customer Sccueefully Registered .... ");
                                 waitConsole();
-                                if (bookingconnecter(customer, book) == -1) continue;
-                            } else {
-                                System.out.println("The Booking Not Found .... ");
-                                waitConsole();
+                                if (bookingconnecter(customer) == -1) continue;
                             }
-                        } else {
-                            System.out.println("The Customer Not Found .... ");
-                            waitConsole();
+                        case 2 ->                         {
+                                String customerName = getStringVal("Reistered customer name: ");
+                                Customer customer = customerTree.binarySearchByStringCustomer(customerName);
+                                if (customer != null){
+                                    String custId = customer.getCustomerId();
+                                    String customerRegisteredBus = getStringVal("Reistered bus number plate: ");
+                                    Bus registeredBus = busTree.binarySearchByString(customerRegisteredBus);
+                                    if (registeredBus != null){
+                                        String bookingId = findBookingCustomer(registeredBus, customer);
+                                        Booking book = bookings.binarySearchByStringBooking(bookingId);
+                                        if (book != null) {
+                                            System.out.println("The Customer Sccueefully Found .... ");
+                                            waitConsole();
+                                            if (bookingconnecter(customer, book) == -1) continue;
+                                        } else {
+                                            System.out.println("The Booking Not Found .... ");
+                                            waitConsole();
+                                        }
+                                    } else {
+                                        System.out.println("The Customer Not Found .... ");
+                                        waitConsole();
+                                    }
+                                } else {
+                                    System.out.println("The Customer Not Found .... ");
+                                    waitConsole();
+                                }                          }
+                        case 3 -> {
+                            continue;
                         }
-                    } else {
-                        System.out.println("The Customer Not Found .... ");
-                        waitConsole();
+                        default -> {
+                            mainLoop = false;
+                            break OUTER;
+                        }
                     }
-                } else if (getBookInput == 3) {
-                    continue;
-                } else {
+                }
+                case 2 -> searchAndDisplayInfo();
+                case 3 -> {
+                    int getInput = companyUeage();
+                    switch (getInput) {
+                        case 1 -> {
+                            LinkedList<String> array = registerInterfaceBus();
+                            registerABus(array);
+                            System.out.println("The bus sccueefully registered .... ");
+                        }
+                        case 2 -> {
+                            if (searchBus() == -1) continue;
+                        }
+                        default -> {
+                            continue;
+                        }
+                    }
+                }
+                default -> {
                     mainLoop = false;
-                    break;
+                    break OUTER;
                 }
-                
-            } else if (mainInput == 2) {
-                searchAndDisplayInfo();
-            } else if (mainInput == 3) {
-                int getInput = companyUeage();
-                
-                if (getInput == 1) {
-                    LinkedList<String> array = registerInterfaceBus();
-                    registerABus(array);
-                    System.out.println("The bus sccueefully registered .... ");
-                } else if (getInput == 2) {
-                    if (searchBus() == -1) continue;
-                } else {
-                    continue;
-                }
-                
-            } else {
-                mainLoop = false;
-                break;
             }
-            
         }
     }
     
     private int bookingconnecter(Customer cust) {
         int getInput = bookingMenu();
-        if(getInput == 1){
-            bookASeat(cust);
-            
-        } else if (getInput == 2) {
-            cancelASeat(cust);
-            
-        } else if (getInput == 3) {
-            replaceASeat(cust);
-            
-        } else {
-            return -1;
+        switch (getInput) {
+            case 1 -> {
+                bookASeat(cust);
+                return 1;
+            }
+            case 2 -> {
+                cancelASeat(cust);
+                return 1;
+            }
+            case 3 -> {
+                replaceASeat(cust);
+                return 1;
+            }
+            default -> {
+                return -1;
+            }
         }
-        
-        return 1;
     }
     
     public void bookASeat(Customer cust) {
@@ -164,20 +175,24 @@ public class MainBusReservationSystemRunner extends ReservationInterface{
     
     private int bookingconnecter(Customer cust, Booking book) {
         int getInput = bookingMenu();
-        if(getInput == 1){
-            bookASeat(cust, book);
+        switch (getInput) {
+            case 1 -> {
+                bookASeat(cust, book);
+                return 1;
+            }
+            case 2 -> {
+                cancelASeat(cust, book);
+                return 1;
+            }
+            case 3 -> {
+                replaceASeat(cust, book);
+                return 1;
+            }
             
-        } else if (getInput == 2) {
-            cancelASeat(cust, book);
-            
-        } else if (getInput == 3) {
-            replaceASeat(cust, book);
-            
-        } else {
-            return -1;
+            default -> {
+                return -1;
+            }
         }
-        
-        return 1;
     }
     public void replaceASeat(Customer cust, Booking book) {
         String name = getSearchBusNumberPlate();
@@ -254,30 +269,38 @@ public class MainBusReservationSystemRunner extends ReservationInterface{
         
         int getInput = displayBusEdit();
         switch(getInput) {
-            case 1:
+            case 1 -> {
                 renameBus(targetedBus);
                 return 1;
-            case 2:
+            }
+            case 2 -> {
                 deleteBus(targetedBus);
                 return 1;
-            case 3:
+            }
+            case 3 -> {
                 editSeatTotal(targetedBus);
                 return 1;
-            case 4:
+            }
+            case 4 -> {
                 editStartingPoint(targetedBus);
                 return 1;
-            case 5:
+            }
+            case 5 -> {
                 editEndingPoint(targetedBus);
                 return 1;
-            case 6:
+            }
+            case 6 -> {
                 editStartingTime(targetedBus);
                 return 1;
-            case 7:
+            }
+            case 7 -> {
                 editFare(targetedBus);
                 return 1;
+            }
                 
-            case 8:
+            case 8 -> {
                 return -1;
+            }
 
         }
         

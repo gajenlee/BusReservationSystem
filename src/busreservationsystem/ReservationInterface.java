@@ -136,12 +136,22 @@ public class ReservationInterface extends DBConnection {
         return getInput;
     }
     
+    public static String getSearchBusEndPoint() {
+        Scanner scan = new Scanner(System.in);
+        String numberPlate;
+        print_art();
+        System.out.println(" ================================== Bus Reservation System | Booking ================================== \n");
+        System.out.print("\nEnter the Bus End Point > ");
+        numberPlate = scan.nextLine();
+        
+        return numberPlate;
+    }
     public static String getSearchBusNumberPlate() {
         Scanner scan = new Scanner(System.in);
         String numberPlate;
         print_art();
         System.out.println(" ================================== Bus Reservation System | Booking ================================== \n");
-        System.out.print("\nEnter the Bus Number Plate Number > ");
+        System.out.print("\nEnter the Bus Number Plate > ");
         numberPlate = scan.nextLine();
         
         return numberPlate;

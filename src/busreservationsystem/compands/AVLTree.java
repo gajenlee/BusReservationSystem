@@ -205,6 +205,20 @@ public class AVLTree<ListType extends Comparable<ListType>> {
         return null;
     }
     
+    private ListType binarySearchByEndPointBus(String targetValue, Node node){
+        if (node != null) {
+            Bus targetBus = (Bus) node.data;
+            if(targetValue.compareToIgnoreCase(targetBus.getEndPoint()) < 0) {
+                return binarySearchByEndPointBus(targetValue, node.left);
+            } else if (targetValue.compareToIgnoreCase(targetBus.getEndPoint()) > 0){
+                return binarySearchByEndPointBus(targetValue, node.right);
+            } else {
+                return node.data;
+            }
+        }
+        return null;
+    }
+    
     private ListType binarySearchByStringCustomer(String targetValue, Node node) {
         if (node != null) {
             Customer targetBus = (Customer) node.data;
@@ -253,6 +267,10 @@ public class AVLTree<ListType extends Comparable<ListType>> {
     
     public ListType binarySearchByString(String target) {
         return binarySearchByString(target, root);
+    }
+    
+    public ListType binarySearchByEndPointBus(String target) {
+        return binarySearchByEndPointBus(target, root);
     }
     
     public ListType binarySearchByStringCustomer(String target) {

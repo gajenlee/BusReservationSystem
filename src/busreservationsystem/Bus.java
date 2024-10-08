@@ -47,6 +47,9 @@ public class Bus implements Comparable<Bus> {
         assignEmptySeatValues();
     }
     
+    
+    public int compareToEndPoint(Bus other) { return this.endPoint.compareToIgnoreCase(other.endPoint);}
+    
     //    comapare to object number plate
     @Override
     public int compareTo(Bus other) {return this.busNumberPlate.compareToIgnoreCase(other.getNumberPlate());}

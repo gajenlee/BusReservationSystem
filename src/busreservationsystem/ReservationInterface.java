@@ -115,26 +115,50 @@ public class ReservationInterface extends DBConnection {
         System.out.println(" ================================== Bus Reservation System | Register ================================== \n");
         System.out.print("Bus Number Plate > ");
         String numberPlate = scan.nextLine();
+        if (numberPlate == null || numberPlate.isEmpty()) {
+            System.out.println("Bus number plate cannot be empty");
+            numberPlate = scan.nextLine();
+        }
         array.push(numberPlate);
         
         System.out.print("Bus Starting Point > ");
         String startPoint = scan.nextLine();
+        if (startPoint == null || startPoint.isEmpty()) {
+            System.out.println("Bus start point cannot be empty");
+            startPoint = scan.nextLine();
+        }
         array.push(startPoint);
         
         System.out.print("Bus Ending Point > ");
         String endPoint = scan.nextLine();
+        if (endPoint == null || endPoint.isEmpty()) {
+            System.out.println("Bus end point cannot be empty");
+            endPoint = scan.nextLine();
+        }
         array.push(endPoint);
         
         System.out.print("Starting Time > ");
         String startTime = scan.nextLine();
+        if (startTime == null || startTime.isEmpty()) {
+            System.out.println("Bus start time cannot be empty");
+            startTime = scan.nextLine();
+        }
         array.push(startTime);
         
         System.out.print("Total Bus Seats > ");
         int seatTotal = scan.nextInt();
+        if (seatTotal < 10) {
+            System.out.println("Bus seat cannot be smaller then 10");
+            seatTotal = scan.nextInt();
+        }
         array.push(Integer.toString(seatTotal));
         
         System.out.print("Bus One Seat Fare > ");
         float fare = scan.nextFloat();
+        if (fare < 10) {
+            System.out.println("Bus fare cannot be smaller then 10.00");
+            fare = scan.nextFloat();
+        }
         array.push(Double.toString(fare));
         
         return array;

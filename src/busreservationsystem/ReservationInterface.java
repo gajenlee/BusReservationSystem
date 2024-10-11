@@ -67,22 +67,42 @@ public class ReservationInterface extends DBConnection {
         System.out.println(" ================================== Bus Reservation System | Register ================================== \n");
         System.out.print("Customer Name > ");
         name = scan.nextLine();
+        if (name == null || name.isEmpty()) {
+            System.out.println("Customer name cannot be empty");
+            name = scan.nextLine();
+        }
         array.push(name);
         
         System.out.print("Customer Phone Number > ");
         phoneNum = scan.nextLine();
+        if (!phoneNum.matches("\\d{10}")){
+            System.out.println("Mobile number must be a 10-digit number");
+            phoneNum = scan.nextLine();
+        }
         array.push(phoneNum);
         
         System.out.print("Customer Email > ");
         email = scan.nextLine();
+        if (email.matches("@")) {
+            System.out.println("Invalid email format");
+            email = scan.nextLine();
+        }
         array.push(email);
         
         System.out.print("Customer City > ");
         city = scan.nextLine();
+        if (city == null || city.isEmpty()) {
+            System.out.println("Customer city cannot be empty");
+            city = scan.nextLine();
+        }
         array.push(city);
         
         System.out.print("Customer Age > ");
         age = scan.nextInt();
+        if (age < 18) {
+            System.out.println("Age must be greater then 18");
+            age = scan.nextInt();
+        }
         array.push(Integer.toString(age));
         
         return array;

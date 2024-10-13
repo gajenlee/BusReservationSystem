@@ -48,11 +48,11 @@ public class Bus implements Comparable<Bus> {
     }
     
     
-    public int compareToEndPoint(Bus other) { return this.endPoint.compareToIgnoreCase(other.endPoint);}
+    public int compareToNumberPlate(Bus other) { return this.busNumberPlate.compareTo(other.getNumberPlate());}
     
     //    comapare to object number plate
     @Override
-    public int compareTo(Bus other) {return this.busNumberPlate.compareToIgnoreCase(other.getNumberPlate());}
+    public int compareTo(Bus other) {return this.endPoint.compareToIgnoreCase(other.getEndPoint());}
     
     //    Objct print string
     @Override
@@ -81,7 +81,7 @@ public class Bus implements Comparable<Bus> {
     
     //    book a seat
     public void bookSeat(int seatNumber){
-        if (!(seatNumber - 1 < TOTAL_SEAT) || !(0 < seatNumber - 1)) {
+        if (!(seatNumber - 1 < TOTAL_SEAT) || !(0 <= seatNumber - 1)) {
             throw new IllegalStateException("The seat number " + seatNumber + " is not found it");
         }
         seats.set(seatNumber - 1, 1);
@@ -90,7 +90,7 @@ public class Bus implements Comparable<Bus> {
     
     //    Cancel Seat
     public void cancelSeat(int seatNumber){
-        if (!(seatNumber - 1 < TOTAL_SEAT) || !(0 < seatNumber - 1)) {
+        if (!(seatNumber - 1 < TOTAL_SEAT) || !(0 <= seatNumber - 1)) {
             throw new IllegalStateException("The seat number " + seatNumber + " is not found it");
         }
         seats.set(seatNumber - 1, 0);
@@ -132,7 +132,10 @@ public class Bus implements Comparable<Bus> {
     
     public String getBusId() {
         return bus_id;
-    } 
+    }
+    public LinkedList<Integer> getSeats() {
+        return this.seats;
+    }
     public void setBusId(String bus_id) {
         this.bus_id = bus_id;
     }

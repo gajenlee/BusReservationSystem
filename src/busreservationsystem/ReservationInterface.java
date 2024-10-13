@@ -83,7 +83,7 @@ public class ReservationInterface extends DBConnection {
         
         System.out.print("Customer Email > ");
         email = scan.nextLine();
-        if (email.matches("@")) {
+        if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$") || email.isEmpty() || email == null) {
             System.out.println("Invalid email format");
             email = scan.nextLine();
         }
@@ -148,7 +148,7 @@ public class ReservationInterface extends DBConnection {
         System.out.print("Total Bus Seats > ");
         int seatTotal = scan.nextInt();
         if (seatTotal < 10) {
-            System.out.println("Bus seat cannot be smaller then 10");
+            System.out.println("Bus seats cannot be smaller then 10");
             seatTotal = scan.nextInt();
         }
         array.push(Integer.toString(seatTotal));

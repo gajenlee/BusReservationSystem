@@ -368,7 +368,6 @@ public class DBConnection {
                 booking.setBookingId(booking_id);
                 booking.setSeatNum(bus_seat);
                 bookings.insert(booking);
-                System.out.println("The Booking data added");
                 
             }
             

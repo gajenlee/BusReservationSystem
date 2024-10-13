@@ -32,7 +32,7 @@ public class Customer implements Comparable<Customer> {
     //    comapare to object number plate
     @Override
     public int compareTo(Customer other) {
-        return this.customerId.compareToIgnoreCase(other.getCustomerId());
+        return this.custName.compareToIgnoreCase(other.getCustomerName());
     }
     
     //    Objct print string

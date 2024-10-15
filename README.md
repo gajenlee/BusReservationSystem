@@ -10,4 +10,6 @@
 ## Requirement
 
 - Download and install the PostgreSQL on your computer
-- Download and install pgAdmin 4 
+- Download and install pgAdmin 4
+
+Link - https://www.postgresql.org/download/

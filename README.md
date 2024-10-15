@@ -6,3 +6,8 @@
 
 ## Bus reservation System Diagram
 ![diagram](https://github.com/user-attachments/assets/9888170c-47a0-4b5c-bd07-f8109f22d5a6)
+
+## Requirement
+
+- Download and install the PostgreSQL on your computer
+- Download and install pgAdmin 4 
